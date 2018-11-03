@@ -1,0 +1,10 @@
+version: '2.3'
+services:
+  notebook:
+    build: ./notebook
+    ports:
+      - "10000:8888"
+    # runtime: nvidia
+    volumes:
+      - ./notebook/src/:/code
+      - ./data/:/data
