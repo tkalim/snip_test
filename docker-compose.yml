@@ -2,9 +2,12 @@ version: '2.3'
 services:
   notebook:
     build: ./notebook
+    image: local/notebook/main:local
     ports:
       - "10000:8888"
-    # runtime: nvidia
+    runtime: nvidia
     volumes:
       - ./notebook/src/:/code
       - ./data/:/data
+    environment:
+      NVIDIA_VISIBLE_DEVICES: 0
