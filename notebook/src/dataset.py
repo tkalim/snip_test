@@ -96,45 +96,4 @@ class VectDataset(data.Dataset):
         return(len(self.labels))
 
 
-class RNNClassifier(nn.Module):
-    def __init__(self):
-        super(RNNClassifier, self).__init__()
-        self.rnn = nn.RNN(input_size=1, hidden_size=2, num_layers=1, batch_first=True)
-        self.linear = nn.Linear(2, 1)
-
-    def forward(self, x, h_state):
-        r_out, h_state = self.rnn(x, h_state)
-        print("rout", r_out.shape)
-        r_out = r_out.view(-1,)
-        pred = self.linear(r_out)
-        return pred, h_state
-
-if __name__ == "__main__":
-    print(torch.cuda.is_available())
-    rnn_model = nn.RNN(input_size=1, hidden_size=2, num_layers=1, batch_first=True)
-    r_model = RNNClassifier()
-    dataset = VectDataset(100)
-    print(len(dataset))
-    loader = data.DataLoader(dataset, batch_size=5, collate_fn=PadCollate(dim=0))
-    for batch, target_batch in loader:
-        # batch = batch.to(device="cuda")
-        # target_batch = target_batch.to(device="cuda")
-        with torch.no_grad():
-            print(batch.shape)
-            output, hn = r_model(batch, None)
-            print(output[0].shape)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
