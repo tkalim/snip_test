@@ -3,3 +3,5 @@ scipy
 jupyter
 sklearn
 pandas
+prompt-toolkit==1.0.15
+newspaper3k
