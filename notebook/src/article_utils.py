@@ -24,7 +24,7 @@ def preprocess_article_data(article_dataframe, vectorizer, transformer):
     returns a sparse matrix
     """
     article_dataframe["total"] = article_dataframe["title"] + " " + article_dataframe["author"] + article_dataframe["text"]
-    vector = vectorizer.transform(article_dataframe)
+    vector = vectorizer.transform(article_dataframe["total"].values)
     sparse_vector = transformer.transform(vector)
     return sparse_vector
 
@@ -45,9 +45,18 @@ def rate_articles(url_list, model, vectorizer, transformer):
         # reliability_scores.append(reliability_score)
     articles_dict = {"title": titles, "author": authors, "text": texts}
     articles_dataframe = pd.DataFrame(articles_dict)
-    print(articles_dataframe.head())
+    # print(articles_dataframe.head())
     articles_vector = preprocess_article_data(articles_dataframe, vectorizer, transformer)
     reliability_scores = model.predict_proba(articles_vector)
+    print("Classifier:\t", model)
+    print("\n")
+    for ind, article in articles_dataframe.iterrows():
+        print(str(article["title"]))
+        print("By:\t", str(article["author"]))
+        print("Score:\t", reliability_scores[ind][0])
+        print("\n")
+
+
 
     return reliability_scores
 
